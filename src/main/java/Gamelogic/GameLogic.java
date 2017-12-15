@@ -1,6 +1,7 @@
 package Gamelogic;
 
 import Objects.AirCraft;
+import Objects.Asteroid;
 import Objects.Bullet;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,23 +12,31 @@ import javafx.scene.layout.Pane;
 
 import javax.xml.datatype.Duration;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class GameLogic extends Pane{
 
-
-            ArrayList<Bullet>bullets=new ArrayList<>();
+    ArrayList<Asteroid>asteroids;
+    ArrayList<Bullet>bullets=new ArrayList<>();
+    public long cooldown;
+    public long TimeToEnemy;
     public Timeline t;
+    double size;
     public AirCraft plane;
     public boolean UP;
     public boolean DOWN;
     public boolean FIRE;
     public GameLogic(double size){
+        this.asteroids=new ArrayList<>();
+        this.cooldown = System.currentTimeMillis();
+        this.TimeToEnemy = System.currentTimeMillis();
         this.setPrefSize(size*16,size*9);
         this.plane = new AirCraft(10,30,size,size);
         this.getChildren().add(plane);
+
         plane.setLayoutX(plane.getPosX());
         plane.setLayoutY(plane.getPosY());
-
+        this.size=size;
         this.UP=false;
         this.DOWN=false;
         this.FIRE=false;
@@ -40,15 +49,33 @@ public class GameLogic extends Pane{
                    plane.move(0,5);
                }
                 if (FIRE){
-                   Bullet bullet = new Bullet(plane.getPosX()+11,plane.getPosY()+15);
+                   if (System.currentTimeMillis()-cooldown>700){
+                       //nowTime=System.currentTimeMillis();
+                   Bullet bullet = new Bullet(plane.getPosX()+plane.getWidth(),plane.getPosY()+plane.getHeight()/2);
                    this.getChildren().add(bullet);
                    bullet.setLayoutX(bullet.getPosX());
                    bullet.setLayoutY(bullet.getPosY());
                    bullets.add(bullet);
-                }
+                   this.cooldown=System.currentTimeMillis();
+                   }
+               }
                 if (!bullets.isEmpty()){
                     for (int i=0;i<bullets.size();i++){
                         bullets.get(i).move(10,0);
+                    }
+                }
+                if (System.currentTimeMillis()-TimeToEnemy>1000){
+                    TimeToEnemy=System.currentTimeMillis();
+                    Asteroid asteroid = new Asteroid(size);
+                    asteroids.add(asteroid);
+                    this.getChildren().add(asteroid);
+                    asteroid.setLayoutX(asteroid.getPosX());
+                    asteroid.setLayoutY(asteroid.getPosY());
+                }
+                if (!asteroids.isEmpty()){
+                    for (int i = 0;i<asteroids.size();i++){
+                        asteroids.get(i).move(-size*0.16,0);
+                        asteroids.get(i).setLayoutX(asteroids.get(i).getPosX());
                     }
                 }
             refresh();
@@ -67,6 +94,11 @@ public class GameLogic extends Pane{
         if (!bullets.isEmpty()){
             for (int i =0;i<bullets.size();i++){
                 bullets.get(i).setLayoutX(bullets.get(i).getPosX());
+                if (bullets.get(i).getPosX()>size*16){
+                    this.getChildren().remove(bullets.get(i));
+                    bullets.remove(i);
+                }
+
             }
         }
     }

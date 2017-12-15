@@ -38,6 +38,9 @@ public class Main extends Application {
             if (event.getCode()==KeyCode.UP){
                 gameLogic.UP=true;
             }
+            if (event.getCode()==KeyCode.SPACE){
+                gameLogic.FIRE=true;
+            }
 
         });
         gameScene.setOnKeyReleased(event1 -> {

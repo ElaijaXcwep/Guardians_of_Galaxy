@@ -1,19 +1,28 @@
 package Objects;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.Random;
 
 public class Asteroid extends Circle {
 
     double posX;
     double posY;
     double speed;
-    double size;  //size is radius of bullet
+    int size;  //size is radius of bullet
+    Random random;
+    public Asteroid(double size){
 
-    public Asteroid(double posX,double posY){
-        this.posX = posX;
-        this.posY=posY;
-        this.speed=0;
-        this.size=1;
+        random = new Random();
+        int i = random.nextInt((int)size*9);
+        this.size = random.nextInt(12)+6;
+        this.posX = size*16+8;
+        this.posY = i;
+        if (this.size==0){size++;}
+        this.setRadius(this.size);
+        this.setFill(Color.GREEN);
+
     }
     public void setPosX(double x){
         this.posX=x;
@@ -22,12 +31,19 @@ public class Asteroid extends Circle {
     public void setPosY(double Y){
         this.posY=Y;
     }
+
+    public double getPosX() {
+        return posX;
+    }
+
+    public double getPosY() {
+        return posY;
+    }
+
     public void setSpeed(double speed){
         this.speed=speed;
     }
-    public void setSize(double r){
-        this.size = r;
-    }
+
     public void move(double x,double y){
         setPosX(this.posX+x);
         setPosY(this.posY+y);
