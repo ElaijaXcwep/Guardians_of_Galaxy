@@ -1,4 +1,5 @@
 import Gamelogic.GameLogic;
+import Objects.AirCraft;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -32,6 +33,12 @@ public class Main extends Application {
 
         });
         gameScene.setOnKeyPressed(event ->{
+            if (event.getCode()== KeyCode.ENTER){
+                this.gameLogic = new GameLogic(70);
+                Scene scene1 = new Scene(gameLogic);
+                primaryStage.setScene(scene1);
+                primaryStage.show();
+            }
             if (event.getCode()==KeyCode.DOWN){
                 gameLogic.DOWN=true;
             }

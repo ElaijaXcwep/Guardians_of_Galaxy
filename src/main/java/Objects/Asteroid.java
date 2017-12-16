@@ -10,13 +10,17 @@ public class Asteroid extends Circle {
     double posX;
     double posY;
     double speed;
+    double HitPoints;
     int size;  //size is radius of bullet
+    int dangerous;
     Random random;
     public Asteroid(double size){
 
         random = new Random();
         int i = random.nextInt((int)size*9);
-        this.size = random.nextInt(12)+6;
+        this.size = random.nextInt(32)+6;
+
+        this.HitPoints = (size-6)*0.1;
         this.posX = size*16+8;
         this.posY = i;
         if (this.size==0){size++;}
@@ -24,6 +28,18 @@ public class Asteroid extends Circle {
         this.setFill(Color.GREEN);
 
     }
+
+    public void getDamage(double dam){
+        this.HitPoints-=dam;
+    }
+    public double getHitPoints(){
+        return this.HitPoints;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
     public void setPosX(double x){
         this.posX=x;
     }

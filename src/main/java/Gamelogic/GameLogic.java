@@ -26,12 +26,15 @@ public class GameLogic extends Pane{
     public boolean UP;
     public boolean DOWN;
     public boolean FIRE;
+    Bullet bullet;
+    Asteroid asteroid;
+
     public GameLogic(double size){
         this.asteroids=new ArrayList<>();
         this.cooldown = System.currentTimeMillis();
         this.TimeToEnemy = System.currentTimeMillis();
         this.setPrefSize(size*16,size*9);
-        this.plane = new AirCraft(10,30,size,size);
+        this.plane = new AirCraft(10,30,20,20);
         this.getChildren().add(plane);
 
         plane.setLayoutX(plane.getPosX());
@@ -43,13 +46,13 @@ public class GameLogic extends Pane{
         Timeline t = new Timeline(new KeyFrame(javafx.util.Duration.millis(30), event -> {
 
                if (UP){
-                   plane.move(0, -5);
+                   plane.move(0, -20);
                }
                if (DOWN){
-                   plane.move(0,5);
+                   plane.move(0,20);
                }
                 if (FIRE){
-                   if (System.currentTimeMillis()-cooldown>700){
+                   if (System.currentTimeMillis()-cooldown>100){
                        //nowTime=System.currentTimeMillis();
                    Bullet bullet = new Bullet(plane.getPosX()+plane.getWidth(),plane.getPosY()+plane.getHeight()/2);
                    this.getChildren().add(bullet);
@@ -59,9 +62,29 @@ public class GameLogic extends Pane{
                    this.cooldown=System.currentTimeMillis();
                    }
                }
-                if (!bullets.isEmpty()){
+                if (!bullets.isEmpty() && !asteroids.isEmpty()){
+
                     for (int i=0;i<bullets.size();i++){
                         bullets.get(i).move(10,0);
+                        for(int j=0;j<asteroids.size();j++){
+                            bullet = bullets.get(i);
+                            asteroid = asteroids.get(j);
+                            if (bullet.getPosX()>asteroid.getPosX()-asteroid.getSize() &&
+                                    (bullet.getPosY()<asteroid.getPosY()+asteroid.getSize()&&bullet.getPosY()>asteroid.getPosY()-asteroid.getSize())){
+                                //System.out.print("keek");
+                                asteroid.getDamage(1);
+                                this.getChildren().remove(bullets.get(i));
+                                bullets.remove(i);
+
+                                if (asteroid.getHitPoints()<0) {
+                                    this.getChildren().remove(asteroids.get(j));
+                                    asteroids.remove(j);
+                                    break;
+                                }
+                                break;
+                            }
+                        }
+                        //bullets.get(i).move(10,0);
                     }
                 }
                 if (System.currentTimeMillis()-TimeToEnemy>1000){
@@ -74,6 +97,19 @@ public class GameLogic extends Pane{
                 }
                 if (!asteroids.isEmpty()){
                     for (int i = 0;i<asteroids.size();i++){
+                        Asteroid aster = asteroids.get(i);
+                        if (aster.getPosX()<0){
+                            this.getChildren().remove(asteroids.get(i));
+                            asteroids.remove(i);
+                            continue;
+                        }
+                        if ((aster.getPosX()-aster.getSize()<plane.getPosX()+plane.getWidth() &&
+                                (aster.getPosY()+aster.getSize()>plane.getPosY() &&
+                                aster.getPosY()-aster.getSize()<plane.getPosY()+plane.getHeight()))){
+                            this.getChildren().removeAll(asteroids.get(i),plane);
+                            asteroids.remove(i);
+                        }
+
                         asteroids.get(i).move(-size*0.16,0);
                         asteroids.get(i).setLayoutX(asteroids.get(i).getPosX());
                     }
