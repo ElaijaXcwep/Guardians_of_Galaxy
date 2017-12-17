@@ -7,8 +7,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.transform.Rotate;
 
 import javax.xml.datatype.Duration;
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class GameLogic extends Pane{
         this.setPrefSize(size*16,size*9);
         this.plane = new AirCraft(10,30,20,20);
         this.getChildren().add(plane);
+        //plane.setFill(new ImagePattern(new Image(String.valueOf(getClass().getResource("/Images/plane.png")))));
 
         plane.setLayoutX(plane.getPosX());
         plane.setLayoutY(plane.getPosY());
@@ -114,6 +118,13 @@ public class GameLogic extends Pane{
                         asteroids.get(i).setLayoutX(asteroids.get(i).getPosX());
                     }
                 }
+               /* if (!asteroids.isEmpty()){
+                    for (int i =0;i<asteroids.size();i++){
+                        asteroids.get(i).setRotationAxis(Rotate.Z_AXIS);
+
+                        //asteroids.get(i).setFill(new ImagePattern(new Image(String.valueOf(getClass().getResource("/Images/Asteroid1.png")))));
+                    }
+                }*/
             refresh();
 
         }));

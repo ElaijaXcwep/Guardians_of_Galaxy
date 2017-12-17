@@ -1,6 +1,8 @@
 package Objects;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class AirCraft extends Rectangle {
@@ -17,7 +19,8 @@ public class AirCraft extends Rectangle {
         this.speed=0;
         this.setWidth(width);
         this.setHeight(height);
-        this.setFill(Color.RED);
+        this.setFill(new ImagePattern(new Image(String.valueOf(getClass().getResource("/Images/plane.png")))));
+        //this.setFill(Color.RED);
     }
 
     public double getPosX() {

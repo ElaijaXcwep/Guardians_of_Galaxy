@@ -2,10 +2,9 @@ import Gamelogic.GameLogic;
 import Objects.AirCraft;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -19,6 +18,9 @@ public class Main extends Application {
         HBox field = new HBox();
         field.setPrefSize(1200,400);
         GameLogic gameLogic = new GameLogic(70);
+        gameLogic.setBackground(new Background(new BackgroundImage(new Image(String.valueOf(getClass().getResource("/Images/Space.jpg")),70*16,70*9,false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER,
+                BackgroundSize.DEFAULT)));
         Scene gameScene = new Scene(gameLogic);
         Scene scene = new Scene(field);
         primaryStage.setScene(scene);

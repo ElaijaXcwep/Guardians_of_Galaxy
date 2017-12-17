@@ -16,7 +16,7 @@ public class Bullet extends Circle {
         this.speed=0;
         this.size=10;
         this.setRadius(3);
-        this.setFill(Color.BLUE);
+        this.setFill(Color.RED);
     }
     public void setPosX(double x){
         this.posX=x;
